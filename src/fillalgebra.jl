@@ -22,11 +22,11 @@ permutedims(a::AbstractFillVector) = fillsimilar(a, (1, length(a)))
 permutedims(a::AbstractFillMatrix) = fillsimilar(a, reverse(axes(a)))
 
 function permutedims(B::AbstractFill, perm)
-    dimsB = size(B)
+    axB = axes(B)
     ndimsB = length(dimsB)
     (ndimsB == length(perm) && isperm(perm)) || throw(ArgumentError("no valid permutation of dimensions"))
-    dimsP = ntuple(i->dimsB[perm[i]], ndimsB)::typeof(dimsB)
-    fillsimilar(B, dimsP)
+    axP = ntuple(i->axB[perm[i]], ndimsB)
+    fillsimilar(B, axP)
 end
 
 Base.@propagate_inbounds function reverse(A::AbstractFill, start::Integer, stop::Integer=lastindex(A))
